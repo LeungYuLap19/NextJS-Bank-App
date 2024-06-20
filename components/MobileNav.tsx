@@ -30,7 +30,7 @@ export default function MobileNav({ user } : MobileNavProps) {
                     />
                 </SheetTrigger>
                 <SheetContent side='left' className='border-none bg-white'>
-                    <Link href={'/'} className='cursor-pointer item-center gap-1 px-4'>
+                    <Link href={'/'} className='cursor-pointer flex item-center gap-1 px-4'>
                         <Image 
                             src={'/icons/logo.svg'} 
                             width={34} 
