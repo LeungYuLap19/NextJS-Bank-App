@@ -35,6 +35,7 @@ export default function AuthForm({ type }: {type: string}) {
             // sign up with app wirte & create plain link token
             if (type === 'sign-up') {
                 const newUser = await signUp(data);
+                setUser(newUser);
             }
             if (type === 'sign-in')  {
                 const user = await signIn({
@@ -42,7 +43,7 @@ export default function AuthForm({ type }: {type: string}) {
                     password: data.password,
                 });
 
-                // user && router.push('/'); // forward to home page
+                user && router.push('/'); // forward to home page
             }
         } catch (error) {
             console.log(error);
