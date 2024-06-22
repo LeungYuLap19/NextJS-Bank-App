@@ -1,5 +1,5 @@
 'use server'
-import { ID } from "node-appwrite";
+import { ID, Query } from "node-appwrite";
 import { createAdminClient, createSessionClient } from "../appwrite";
 import { cookies } from "next/headers";
 import { encryptId, extractCustomerIdFromUrl, parseStringify } from "../utils";
@@ -132,6 +132,8 @@ async function createBankAccount({ userid, bankid, accountid, accessToken, fundi
 async function exchangePublicToken({ publicToken, user }: exchangePublicTokenProps) {
     try {
         const response = await plaidClient.itemPublicTokenExchange({
+            client_id: process.env.PLAID_CLIENT_ID,
+            secret: process.env.PLAID_SECRET,
             public_token: publicToken,
         });
         const accessToken = response.data.access_token;
@@ -178,11 +180,41 @@ async function exchangePublicToken({ publicToken, user }: exchangePublicTokenPro
     }
 }
 
+async function getBanks({ userId }: getBanksProps) {
+    try {
+        const { database } = await createAdminClient();
+        const banks = await database.listDocuments(
+            APPWRITE_DATABASE_ID!, 
+            APPWRITE_BANK_COLLECTION_ID!,
+            [Query.equal('users', [userId])] 
+        );
+        return parseStringify(banks.documents);
+    } catch (error) {
+        console.error('Error', error);
+    }
+}
+
+async function getBank({ documentId }: getBankProps) {
+    try {
+        const { database } = await createAdminClient();
+        const bank = await database.getDocument(
+            APPWRITE_DATABASE_ID!, 
+            APPWRITE_BANK_COLLECTION_ID!,
+            documentId
+        );
+        return parseStringify(bank);
+    } catch (error) {
+        console.error('Error', error);
+    }
+}
+
 export {
     signIn,
     signUp,
     getLoggedInUser,
     logoutAccount,
     createLinkToken,
-    exchangePublicToken
+    exchangePublicToken,
+    getBanks,
+    getBank,
 }

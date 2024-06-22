@@ -3,9 +3,16 @@ import HeaderBox from './../../components/HeaderBox';
 import TotalBalanceBox from '@/components/TotalBalanceBox';
 import RightSideBar from '@/components/RightSideBar';
 import { getLoggedInUser } from '@/lib/actions/user.actions';
+import { getAccount, getAccounts } from '@/lib/actions/bank.actions';
 
-export default async function Home() {
+export default async function Home({ searchParams: { id, page } }: SearchParamProps) {
   const user = await getLoggedInUser();
+  const accounts = await getAccounts({ userId: user.$id });
+  if(!accounts) return;
+
+  const accountsData = accounts?.data;
+  const appwriteItemId = (id as string) || accountsData[0]?.appwriteItemId;
+  const account = await getAccount({ appwriteItemId });
   return (
     <section className='home'>
       <div className='home-content'>
@@ -18,9 +25,9 @@ export default async function Home() {
           />
 
           <TotalBalanceBox 
-            accounts={[]}
-            totalBanks={1}
-            totalCurrentBalance={1021.35}
+            accounts={accountsData}
+            totalBanks={accounts?.totalBanks}
+            totalCurrentBalance={accounts?.totalCurrentBalance}
           />
         </header>
         Recent transactions

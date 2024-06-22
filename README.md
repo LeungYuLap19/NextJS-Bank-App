@@ -37,11 +37,13 @@ Check out our [Next.js deployment documentation](https://nextjs.org/docs/deploym
 
 ## Project from adrianhajdin
 ## Tech Stacks Used 
-1. Nextjs
-2. Tailwind css
-3. Typescript
-4. Sentry (monitoring software)
-5. Shadcn ui
-6. Appwrite
-7. Plaid 
-8. Dwolla
+Next.js
+TypeScript
+Appwrite
+Plaid
+Dwolla
+React Hook Form
+Zod
+TailwindCSS
+Chart.js
+ShadCN
