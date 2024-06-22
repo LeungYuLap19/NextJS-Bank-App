@@ -8,14 +8,14 @@ declare type SearchParamProps = {
 // ========================================
 
 declare type SignUpParams = {
-  firstName?: string;
-  lastName?: string;
-  address1?: string;
-  city?: string;
-  state?: string;
-  postalCode?: string;
-  dateOfBirth?: string;
-  ssn?: string;
+  firstName: string;
+  lastName: string;
+  address1: string;
+  city: string;
+  state: string;
+  postalCode: string;
+  dateOfBirth: string;
+  ssn: string;
   email: string;
   password: string;
 };
@@ -310,11 +310,11 @@ declare interface exchangePublicTokenProps {
 
 declare interface createBankAccountProps {
   accessToken: string;
-  userId: string;
-  accountId: string;
-  bankId: string;
+  userid: string;
+  accountid: string;
+  bankid: string;
   fundingSourceUrl: string;
-  sharableId: string;
+  shareableid: string;
 }
 
 declare interface getBanksProps {
