@@ -9,7 +9,7 @@ import RecentTransactions from '@/components/RecentTransactions';
 export default async function Home({ searchParams: { id, page } }: SearchParamProps) {
   const currentPage = Number(page as string) || 1;
   const user = await getLoggedInUser();
-  const accounts = await getAccounts({ userId: user.$id });
+  const accounts = await getAccounts({ userId: user?.$id });
   if(!accounts) return;
 
   const accountsData = accounts?.data;
