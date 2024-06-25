@@ -15,6 +15,7 @@ import { sidebarLinks } from '@/constants'
 import { usePathname } from 'next/navigation'
 import { cn } from '@/lib/utils'
 import Footer from './Footer'
+import PlaidLink from "./PlaidLink"
 
 export default function MobileNav({ user } : MobileNavProps) {
     const pathname = usePathname();
@@ -71,7 +72,7 @@ export default function MobileNav({ user } : MobileNavProps) {
                                         )
                                     }) 
                                 }
-                            User
+                                <PlaidLink user={user} />
                             </nav>
                         </SheetClose>
                         <Footer user={user} type={'mobile'} />

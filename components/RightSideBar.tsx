@@ -32,7 +32,7 @@ export default function RightSideBar({ user, transactions, banks } : RightSideba
       <section className='banks'>
         <div className='flex w-full justify-between'>
           <h2 className='header-2'>My Banks</h2>
-          <Link
+          {/* <Link
             href='/'
             className='flex gap-2'
           >
@@ -45,7 +45,7 @@ export default function RightSideBar({ user, transactions, banks } : RightSideba
             <h2 className='text-14 font-semibold text-gray-600'>
               Add Bank
             </h2>
-          </Link>
+          </Link> */}
         </div>
 
         {
