@@ -9,7 +9,8 @@ import React, { use } from 'react'
 export default async function TransactionHistory({ searchParams: { id, page } }: SearchParamProps) {
   const currentPage = Number(page as string) || 1;
   const user = await getLoggedInUser();
-  const accounts = await getAccounts({ userId: user.$id });
+  console.log('TransactionHistory', user.$id);
+  const accounts = await getAccounts({ userId: user?.$id });
   if(!accounts) return;
 
   const accountsData = accounts?.data;

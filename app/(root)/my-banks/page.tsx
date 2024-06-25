@@ -6,6 +6,7 @@ import React from 'react'
 
 export default async function MyBanks() {
   const user = await getLoggedInUser();
+  console.log('MyBanks', user.$id);
   const accounts = await getAccounts({ userId: user?.$id });
 
   return (

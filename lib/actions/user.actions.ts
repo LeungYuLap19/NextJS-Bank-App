@@ -97,7 +97,8 @@ async function getLoggedInUser() {
       const user = await getUserInfo({ userId: result.$id });
       return parseStringify(user);
     } catch (error) {
-      return null;
+        console.error('Error', error);
+        return null;
     }
 }
   
@@ -107,6 +108,7 @@ async function logoutAccount() {
        cookies().delete('appwrite-session');
        await account.deleteSession('current'); 
     } catch (error) {
+        console.error('Error', error);
         return null;
     }
 }
