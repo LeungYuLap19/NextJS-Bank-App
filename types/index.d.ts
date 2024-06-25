@@ -28,9 +28,9 @@ declare type LoginUser = {
 declare type User = {
   $id: string;
   email: string;
-  userId: string;
+  userid: string;
   dwollaCustomerUrl: string;
-  dwollaCustomerId: string;
+  dwollaCustomerid: string;
   firstName: string;
   lastName: string;
   name: string,
@@ -60,7 +60,7 @@ declare type Account = {
   type: string;
   subtype: string;
   appwriteItemId: string;
-  sharableId: string;
+  shareableId: string;
 };
 
 declare type Transaction = {
@@ -84,12 +84,12 @@ declare type Transaction = {
 
 declare type Bank = {
   $id: string;
-  accountId: string;
+  accountid: string;
   bankId: string;
   accessToken: string;
   fundingSourceUrl: string;
   userId: string;
-  sharableId: string;
+  shareableid: string;
 };
 
 declare type AccountTypes =

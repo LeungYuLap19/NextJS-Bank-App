@@ -14,18 +14,37 @@ const {
     APPWRITE_BANK_COLLECTION_ID 
 } = process.env;
 
+async function getUserInfo({ userId }: getUserInfoProps) {
+    try {
+        const { database } = await createAdminClient();
+
+        const user = await database.listDocuments(
+            APPWRITE_DATABASE_ID!,
+            APPWRITE_USER_COLLECTION_ID!,
+            [Query.equal('userid', [userId])]
+        );
+
+        return parseStringify(user.documents[0]);
+    } catch (error) {
+        console.error('Error', error);
+    }
+}
+
 async function signIn({ email, password } : signInProps) {
     try {
         const { account } = await createAdminClient();
-        const response = await account.createEmailPasswordSession(email, password);
-        cookies().set("appwrite-session", response.secret, {
+
+        const session = await account.createEmailPasswordSession(email, password);
+        cookies().set("appwrite-session", session.secret, {
             path: "/",
             httpOnly: true,
             sameSite: "strict",
             secure: true,
         });
 
-        return parseStringify(response);
+        const user = await getUserInfo({ userId: session.userId });
+
+        return parseStringify(user);
     } catch (error) {
         console.error('Error', error);
     }
@@ -74,7 +93,8 @@ async function signUp({ password, ...userData }: SignUpParams) {
 async function getLoggedInUser() {
     try {
       const { account } = await createSessionClient();
-      const user = await account.get();
+      const result = await account.get();
+      const user = await getUserInfo({ userId: result.$id });
       return parseStringify(user);
     } catch (error) {
       return null;
@@ -94,8 +114,6 @@ async function logoutAccount() {
 async function createLinkToken(user: User) {
     try {
         const tokenParams = {
-            client_id: process.env.PLAID_CLIENT_ID,
-            secret: process.env.PLAID_SECRET,
             user: {
                 client_user_id: user.$id
             },
@@ -132,8 +150,6 @@ async function createBankAccount({ userid, bankid, accountid, accessToken, fundi
 async function exchangePublicToken({ publicToken, user }: exchangePublicTokenProps) {
     try {
         const response = await plaidClient.itemPublicTokenExchange({
-            client_id: process.env.PLAID_CLIENT_ID,
-            secret: process.env.PLAID_SECRET,
             public_token: publicToken,
         });
         const accessToken = response.data.access_token;
@@ -156,7 +172,7 @@ async function exchangePublicToken({ publicToken, user }: exchangePublicTokenPro
 
         // Create a funding source URL for the account using the Dwolla customer id, processor token and bank name
         const fundingSourceUrl = await addFundingSource({
-            dwollaCustomerId: user.dwollaCustomerId,
+            dwollaCustomerId: user.dwollaCustomerid,
             processorToken,
             bankName: accountData.name 
         });
@@ -186,7 +202,7 @@ async function getBanks({ userId }: getBanksProps) {
         const banks = await database.listDocuments(
             APPWRITE_DATABASE_ID!, 
             APPWRITE_BANK_COLLECTION_ID!,
-            [Query.equal('users', [userId])] 
+            [Query.equal('userid', [userId])] 
         );
         return parseStringify(banks.documents);
     } catch (error) {
@@ -208,6 +224,21 @@ async function getBank({ documentId }: getBankProps) {
     }
 }
 
+async function getBankByAccountId({ accountId }: getBankByAccountIdProps) {
+    try {
+        const { database } = await createAdminClient();
+        const bank = await database.listDocuments(
+            APPWRITE_DATABASE_ID!, 
+            APPWRITE_BANK_COLLECTION_ID!,
+            [Query.equal('accountid', [accountId])]
+        )
+        if (bank.total !== 1) return null;
+        return parseStringify(bank.documents[0]);
+    } catch (error) {
+        console.error('Error', error);
+    }
+}
+
 export {
     signIn,
     signUp,
@@ -217,4 +248,5 @@ export {
     exchangePublicToken,
     getBanks,
     getBank,
+    getBankByAccountId
 }
