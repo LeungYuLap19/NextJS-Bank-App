@@ -56,7 +56,7 @@ export const BankDropdown = ({
         <p className="line-clamp-1 w-full text-left">{selected.name}</p>
       </SelectTrigger>
       <SelectContent
-        className={`w-full md:w-[300px] ${otherStyles}`}
+        className={`w-full bg-white md:w-[300px] ${otherStyles}`}
         align="end"
       >
         <SelectGroup>
