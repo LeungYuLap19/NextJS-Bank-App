@@ -132,7 +132,7 @@ export default function AuthForm({ type }: {type: string}) {
                                         />
                                         <CustomInput
                                             control={form.control} name={'postalCode'} label={'Postal Code'}
-                                            placeholder={'eg. 1101'}
+                                            placeholder={'eg. 11011'}
                                         />
                                     </div>
                                     

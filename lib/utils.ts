@@ -195,14 +195,21 @@ export const getTransactionStatus = (date: Date) => {
   return date > twoDaysAgo ? "Processing" : "Success";
 };
 
+const dateOfBirthSchema = z.string().refine(date => {
+  const regex = /^\d{4}-\d{2}-\d{2}$/;
+  return regex.test(date);
+}, {
+  message: "Date of birth must be in the format yyyy-mm-dd"
+});
+
 export const authFormSchema = (type: string) => z.object({
   firstName: type === 'sign-in' ? z.string().optional() : z.string().min(3),
   lastName: type === 'sign-in' ? z.string().optional() : z.string().min(3),
-  address1: type === 'sign-in' ? z.string().optional() : z.string().max(100),
+  address1: type === 'sign-in' ? z.string().optional() : z.string().max(50),
   city: type === 'sign-in' ? z.string().optional() : z.string().max(50),
   state: type === 'sign-in' ? z.string().optional() : z.string().min(2).max(2),
-  postalCode: type === 'sign-in' ? z.string().optional() : z.string().min(3).max(6),
-  dateOfBirth: type === 'sign-in' ? z.string().optional() : z.string().min(3),
+  postalCode: type === 'sign-in' ? z.string().optional() : z.string().min(5).max(5),
+  dateOfBirth: type === 'sign-in' ? dateOfBirthSchema.optional() : dateOfBirthSchema,
   ssn: type === 'sign-in' ? z.string().optional() : z.string().min(3),
   email: z.string().email(),
   password: z.string().min(8),
